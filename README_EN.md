@@ -181,7 +181,7 @@ python main.py
 docker build -t ai-quiz-system .
 
 # Run container
-docker run -p 8000:8000 -v $(pwd)/config.yaml:/app/config.yaml ai-quiz-system
+docker run -p 8081:8081 -v $(pwd)/config.yaml:/app/config.yaml ai-quiz-system
 ```
 
 ### 🎯 Service Verification
@@ -193,11 +193,11 @@ After successful startup, you will see:
 ==================================================
 👤 Author: Toni Wang
 📧 Email: shell7@petalmail.com
-🌐 Address: http://0.0.0.0:8000
+🌐 Address: http://0.0.0.0:8081
 ==================================================
 ```
 
-Visit http://localhost:8000 to view API documentation
+Visit http://localhost:8081 to view API documentation
 
 ## 📖 API Documentation
 
@@ -226,10 +226,10 @@ Intelligent quiz query and answer generation interface
 **Request Examples:**
 ```bash
 # GET request
-curl "http://localhost:8000/api/query?title=What is the capital of China?&options=A. Beijing B. Shanghai C. Guangzhou&type=Multiple Choice"
+curl "http://localhost:8081/api/query?title=What is the capital of China?&options=A. Beijing B. Shanghai C. Guangzhou&type=Multiple Choice"
 
 # POST request
-curl -X POST http://localhost:8000/api/query \
+curl -X POST http://localhost:8081/api/query \
   -H "Content-Type: application/json" \
   -d '{
     "title": "What is 1+1?",
@@ -325,12 +325,12 @@ curl -X POST http://localhost:8000/api/query \
 
 After starting the service, visit the following URLs for complete API documentation:
 
-- **📘 Swagger UI**: http://localhost:8000/docs
+- **📘 Swagger UI**: http://localhost:8081/docs
   - Support for online API testing
   - Detailed request/response examples
   - Parameter descriptions and constraints
 
-- **📗 ReDoc**: http://localhost:8000/redoc
+- **📗 ReDoc**: http://localhost:8081/redoc
   - Beautiful three-column documentation
   - Suitable for printing and sharing
   - Complete API specifications
@@ -340,7 +340,7 @@ After starting the service, visit the following URLs for complete API documentat
 #### Batch Queries
 ```bash
 # Use POST for batch queries
-curl -X POST http://localhost:8000/api/query/batch \
+curl -X POST http://localhost:8081/api/query/batch \
   -H "Content-Type: application/json" \
   -d '{
     "questions": [
@@ -353,7 +353,7 @@ curl -X POST http://localhost:8000/api/query/batch \
 #### Specify AI Provider
 ```bash
 # Temporarily specify AI platform
-curl "http://localhost:8000/api/query?title=Programming question&provider=deepseek"
+curl "http://localhost:8081/api/query?title=Programming question&provider=deepseek"
 ```
 
 ## ⚙️ Configuration Guide
@@ -363,7 +363,7 @@ curl "http://localhost:8000/api/query?title=Programming question&provider=deepse
 ```yaml
 server:
   host: "0.0.0.0"      # Server address
-  port: 8000           # Server port
+  port: 8081           # Server port
   reload: false        # Enable hot reload
 ```
 
@@ -402,13 +402,13 @@ python test_fastapi_app.py
 
 ```bash
 # Test query interface
-curl "http://localhost:8000/api/query?title=1+1&?type=Fill in the Blank"
+curl "http://localhost:8081/api/query?title=1+1&?type=Fill in the Blank"
 
 # Test health check
-curl "http://localhost:8000/api/health"
+curl "http://localhost:8081/api/health"
 
 # Test system information
-curl "http://localhost:8000/api/system/info"
+curl "http://localhost:8081/api/system/info"
 ```
 
 ## 🔑 API Platform API Key Setup
@@ -550,8 +550,8 @@ project/
 **Issue 1: Port Already in Use**
 ```bash
 # Find process occupying the port
-netstat -ano | findstr :8000  # Windows
-lsof -i :8000                  # macOS/Linux
+netstat -ano | findstr :8081  # Windows
+lsof -i :8081                  # macOS/Linux
 
 # Kill process or modify port in configuration file
 ```
@@ -647,10 +647,10 @@ logging:
 tail -f app.log
 
 # Check system status
-curl http://localhost:8000/api/health
+curl http://localhost:8081/api/health
 
 # Test AI provider status
-curl http://localhost:8000/api/ai-providers
+curl http://localhost:8081/api/ai-providers
 ```
 
 ### Getting Help
