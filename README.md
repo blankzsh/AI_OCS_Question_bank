@@ -4,6 +4,7 @@
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://docker.com)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey.svg)]()
 [![GitHub stars](https://img.shields.io/github/stars/blankzsh/AI_OCS_Question_bank.svg?style=social)](https://github.com/blankzsh/AI_OCS_Question_bank)
@@ -14,7 +15,7 @@
 
 📁 **项目地址**: [https://github.com/blankzsh/AI_OCS_Question_bank](https://github.com/blankzsh/AI_OCS_Question_bank)
 
-[快速开始](#-快速开始) • [API文档](#-api文档) • [配置指南](#-配置说明) • [故障排除](#-故障排除)
+[快速开始](#-快速开始) • [Docker部署](#-docker部署) • [API文档](#-api文档) • [配置指南](#-配置说明) • [故障排除](#-故障排除)
 
 </div>
 
@@ -26,6 +27,7 @@
 - [🏗️ 系统架构](#-系统架构)
 - [📋 系统要求](#-系统要求)
 - [🚀 快速开始](#-快速开始)
+- [🐳 Docker部署](#-docker部署)
 - [📖 API文档](#-api文档)
 - [⚙️ 配置说明](#-配置说明)
 - [🧪 测试指南](#-测试指南)
@@ -60,6 +62,14 @@
 - **详细错误信息** - 完善的错误处理和日志
 - **单元测试覆盖** - 完整的测试套件
 - **RESTful API设计** - 标准化的API接口
+
+### 🐳 **容器化部署**
+- **Docker支持** - 完整的容器化解决方案
+- **一键部署** - 跨平台自动化部署脚本
+- **多环境支持** - 开发/生产/监控三种部署模式
+- **服务编排** - Docker Compose多容器管理
+- **负载均衡** - Nginx反向代理支持
+- **监控告警** - Prometheus性能监控集成
 
 ## 🏗️ 系统架构
 
@@ -174,14 +184,58 @@ ai:
 python main.py
 ```
 
-### 📦 方式二：Docker部署
+### 🐳 方式二：Docker一键部署（推荐）
+
+#### 系统要求
+- **Docker**: 20.10+
+- **Docker Compose**: 2.0+
+- **内存**: 最小 2GB，推荐 4GB+
+
+#### 一键部署命令
+
+**Linux/macOS:**
+```bash
+# 开发环境（推荐）
+./deploy.sh
+
+# 生产环境
+./deploy.sh --mode prod --build
+
+# 完整环境（含监控）
+./deploy.sh --mode full --build
+```
+
+**Windows:**
+```cmd
+# 开发环境（推荐）
+deploy.bat
+
+# 生产环境
+deploy.bat --mode prod --build
+
+# 完整环境（含监控）
+deploy.bat --mode full --build
+```
+
+#### 部署模式说明
+
+| 模式 | 服务组件 | 适用场景 | 特点 |
+|------|----------|----------|------|
+| **开发模式** | 应用 + Redis | 开发测试 | 热重载、调试信息 |
+| **生产模式** | 应用 + Redis + Nginx | 生产部署 | 负载均衡、HTTPS |
+| **完整模式** | 应用 + Redis + Nginx + Prometheus | 企业部署 | 完整监控、告警 |
+
+#### 手动Docker部署
 
 ```bash
 # 构建镜像
 docker build -t ai-quiz-system .
 
-# 运行容器
+# 运行容器（简单部署）
 docker run -p 8000:8000 -v $(pwd)/config.yaml:/app/config.yaml ai-quiz-system
+
+# 使用Docker Compose（推荐）
+docker-compose up -d
 ```
 
 ### 🎯 服务验证
@@ -198,6 +252,237 @@ docker run -p 8000:8000 -v $(pwd)/config.yaml:/app/config.yaml ai-quiz-system
 ```
 
 访问 http://localhost:8000 查看API文档
+
+## 🐳 Docker部署
+
+### 📋 部署架构
+
+```mermaid
+graph TB
+    subgraph "Docker容器环境"
+        A[Nginx反向代理] --> B[AI问答系统]
+        B --> C[Redis缓存]
+        B --> D[SQLite数据库]
+        E[Prometheus监控] --> B
+        F[数据持久化卷] --> B
+        F --> C
+        F --> D
+    end
+
+    subgraph "外部访问"
+        G[用户请求] --> A
+        H[HTTPS访问] --> A
+        I[监控面板] --> E
+    end
+```
+
+### 🔧 配置文件
+
+#### 环境变量配置 (docker.env)
+```env
+# 应用基础配置
+APP_NAME=AI智能题库查询系统
+SERVER_HOST=0.0.0.0
+SERVER_PORT=8000
+
+# 数据库配置
+DATABASE_URL=sqlite:///./data/app.db
+
+# Redis配置
+REDIS_URL=redis://redis:6379/0
+
+# AI平台配置
+OPENAI_API_KEY=your_openai_api_key
+DEEPSEEK_API_KEY=your_deepseek_api_key
+ALIBABA_API_KEY=your_alibaba_api_key
+GOOGLE_API_KEY=your_google_api_key
+
+# 安全配置
+SECRET_KEY=your-secret-key-here
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+```
+
+#### 服务编排配置 (docker-compose.yml)
+```yaml
+version: '3.8'
+
+services:
+  ai-wenda:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+    volumes:
+      - ./data:/app/data
+      - ./config.yaml:/app/config.yaml:ro
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - ai-wenda
+    restart: unless-stopped
+    profiles:
+      - production
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    restart: unless-stopped
+    profiles:
+      - monitoring
+
+volumes:
+  redis-data:
+```
+
+### 🌐 服务访问
+
+部署完成后，可通过以下地址访问服务：
+
+| 服务 | 开发模式 | 生产模式 | 完整模式 |
+|------|----------|----------|----------|
+| **API服务** | http://localhost:8000 | http://localhost | http://localhost |
+| **API文档** | http://localhost:8000/docs | http://localhost/docs | http://localhost/docs |
+| **Redis** | localhost:6379 | localhost:6379 | localhost:6379 |
+| **监控面板** | - | - | http://localhost:9090 |
+
+### 📊 监控管理
+
+#### Prometheus监控指标
+- **系统指标**: CPU、内存、磁盘使用率
+- **应用指标**: 请求量、响应时间、错误率
+- **数据库指标**: 连接数、查询性能
+- **缓存指标**: 命中率、内存使用
+
+#### 健康检查
+```bash
+# 检查服务状态
+curl http://localhost:8000/api/health
+
+# 查看容器状态
+docker-compose ps
+
+# 查看服务日志
+docker-compose logs -f ai-wenda
+```
+
+### 🔄 常用管理命令
+
+```bash
+# 启动服务
+./deploy.sh
+
+# 停止服务
+./deploy.sh --stop
+
+# 重启服务
+./deploy.sh --restart
+
+# 查看日志
+./deploy.sh --logs
+
+# 清理服务
+./deploy.sh --clean
+
+# 重新构建
+./deploy.sh --build
+```
+
+### 🔒 安全配置
+
+#### 容器安全
+- ✅ 非root用户运行 (UID: 1000)
+- ✅ 最小权限原则
+- ✅ 只暴露必要端口
+- ✅ 健康检查机制
+
+#### 网络安全
+- ✅ 内部网络隔离
+- ✅ Nginx反向代理
+- ✅ SSL/TLS支持
+- ✅ 安全头配置
+
+#### 数据安全
+- ✅ 敏感信息环境变量化
+- ✅ 数据持久化存储
+- ✅ 定期备份机制
+- ✅ 访问权限控制
+
+### 📈 性能优化
+
+#### 资源配置
+```yaml
+services:
+  ai-wenda:
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '1.0'
+          memory: 1G
+```
+
+#### 缓存策略
+- **Redis缓存**: API响应缓存，TTL可配置
+- **连接池**: 数据库连接复用
+- **静态资源**: Nginx静态文件缓存
+
+### 🚨 故障排除
+
+#### 常见问题
+
+1. **容器启动失败**
+```bash
+# 查看详细日志
+docker-compose logs ai-wenda
+
+# 重新构建镜像
+docker-compose build --no-cache
+```
+
+2. **端口冲突**
+```bash
+# 修改docker-compose.yml中的端口映射
+ports:
+  - "8001:8000"  # 改为其他端口
+```
+
+3. **权限问题**
+```bash
+# 修复数据目录权限
+sudo chown -R 1000:1000 ./data
+```
+
+#### 性能调优
+
+1. **内存优化**: 调整容器内存限制
+2. **连接池优化**: 配置数据库连接池大小
+3. **缓存策略**: 调整Redis缓存TTL
+
+### 📚 更多信息
+
+详细的Docker部署文档请参考：[DOCKER.md](DOCKER.md)
 
 ## 📖 API文档
 
@@ -449,8 +734,18 @@ project/
 ├── requirements.txt             # 项目依赖
 ├── README.md                    # 中文项目文档
 ├── README_EN.md                # 英文项目文档
-├── test_api.py                  # API测试脚本
-└── test_fastapi_app.py          # 应用测试脚本
+├── test_fastapi_app.py          # 应用测试脚本
+├── Dockerfile                   # Docker镜像构建文件
+├── docker-compose.yml           # 服务编排配置
+├── docker.env                   # Docker环境变量模板
+├── .dockerignore               # Docker构建忽略文件
+├── deploy.sh                   # Linux/macOS部署脚本
+├── deploy.bat                  # Windows部署脚本
+├── DOCKER.md                   # Docker部署详细文档
+├── nginx/                      # Nginx配置目录
+│   └── nginx.conf             # Nginx反向代理配置
+└── monitoring/                 # 监控配置目录
+    └── prometheus.yml         # Prometheus监控配置
 ```
 
 ## 🚨 故障排除
