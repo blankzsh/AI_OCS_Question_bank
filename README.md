@@ -232,7 +232,7 @@ deploy.bat --mode full --build
 docker build -t ai-quiz-system .
 
 # 运行容器（简单部署）
-docker run -p 8000:8000 -v $(pwd)/config.yaml:/app/config.yaml ai-quiz-system
+docker run -p 8081:8081 -v $(pwd)/config.yaml:/app/config.yaml ai-quiz-system
 
 # 使用Docker Compose（推荐）
 docker-compose up -d
@@ -247,11 +247,11 @@ docker-compose up -d
 ==================================================
 👤 作者: Toni Wang
 📧 邮箱: shell7@petalmail.com
-🌐 地址: http://0.0.0.0:8000
+🌐 地址: http://0.0.0.0:8081
 ==================================================
 ```
 
-访问 http://localhost:8000 查看API文档
+访问 http://localhost:8081 查看API文档
 
 ## 🐳 Docker部署
 
@@ -283,7 +283,7 @@ graph TB
 # 应用基础配置
 APP_NAME=AI智能题库查询系统
 SERVER_HOST=0.0.0.0
-SERVER_PORT=8000
+SERVER_PORT=8081
 
 # 数据库配置
 DATABASE_URL=sqlite:///./data/app.db
@@ -310,7 +310,7 @@ services:
   ai-wenda:
     build: .
     ports:
-      - "8000:8000"
+      - "8081:8081"
     environment:
       - PYTHONPATH=/app
     volumes:
@@ -360,8 +360,8 @@ volumes:
 
 | 服务 | 开发模式 | 生产模式 | 完整模式 |
 |------|----------|----------|----------|
-| **API服务** | http://localhost:8000 | http://localhost | http://localhost |
-| **API文档** | http://localhost:8000/docs | http://localhost/docs | http://localhost/docs |
+| **API服务** | http://localhost:8081 | http://localhost | http://localhost |
+| **API文档** | http://localhost:8081/docs | http://localhost/docs | http://localhost/docs |
 | **Redis** | localhost:6379 | localhost:6379 | localhost:6379 |
 | **监控面板** | - | - | http://localhost:9090 |
 
@@ -376,7 +376,7 @@ volumes:
 #### 健康检查
 ```bash
 # 检查服务状态
-curl http://localhost:8000/api/health
+curl http://localhost:8081/api/health
 
 # 查看容器状态
 docker-compose ps
@@ -465,7 +465,7 @@ docker-compose build --no-cache
 ```bash
 # 修改docker-compose.yml中的端口映射
 ports:
-  - "8001:8000"  # 改为其他端口
+  - "8002:8081"  # 改为其他端口
 ```
 
 3. **权限问题**
@@ -511,10 +511,10 @@ sudo chown -R 1000:1000 ./data
 **请求示例：**
 ```bash
 # GET请求
-curl "http://localhost:8000/api/query?title=中国的首都是哪里？&options=A.北京 B.上海 C.广州&type=选择题"
+curl "http://localhost:8081/api/query?title=中国的首都是哪里？&options=A.北京 B.上海 C.广州&type=选择题"
 
 # POST请求
-curl -X POST http://localhost:8000/api/query \
+curl -X POST http://localhost:8081/api/query \
   -H "Content-Type: application/json" \
   -d '{
     "title": "1+1等于多少？",
@@ -610,12 +610,12 @@ curl -X POST http://localhost:8000/api/query \
 
 启动服务后，访问以下地址查看完整API文档：
 
-- **📘 Swagger UI**: http://localhost:8000/docs
+- **📘 Swagger UI**: http://localhost:8081/docs
   - 支持在线测试API
   - 详细的请求/响应示例
   - 参数说明和约束
 
-- **📗 ReDoc**: http://localhost:8000/redoc
+- **📗 ReDoc**: http://localhost:8081/redoc
   - 美观的三栏式文档
   - 适合打印和分享
   - 完整的API规范
@@ -625,7 +625,7 @@ curl -X POST http://localhost:8000/api/query \
 #### 批量查询
 ```bash
 # 使用POST进行批量查询
-curl -X POST http://localhost:8000/api/query/batch \
+curl -X POST http://localhost:8081/api/query/batch \
   -H "Content-Type: application/json" \
   -d '{
     "questions": [
@@ -638,7 +638,7 @@ curl -X POST http://localhost:8000/api/query/batch \
 #### 指定AI提供商
 ```bash
 # 临时指定使用的AI平台
-curl "http://localhost:8000/api/query?title=编程问题&provider=deepseek"
+curl "http://localhost:8081/api/query?title=编程问题&provider=deepseek"
 ```
 
 ## 🔧 配置说明
@@ -648,7 +648,7 @@ curl "http://localhost:8000/api/query?title=编程问题&provider=deepseek"
 ```yaml
 server:
   host: "0.0.0.0"      # 服务器地址
-  port: 8000           # 服务器端口
+  port: 8081           # 服务器端口
   reload: false        # 是否开启热重载
 ```
 
@@ -687,13 +687,13 @@ python test_app.py
 
 ```bash
 # 测试查询接口
-curl "http://localhost:8000/api/query?title=1+1等于多少？&type=填空题"
+curl "http://localhost:8081/api/query?title=1+1等于多少？&type=填空题"
 
 # 测试健康检查
-curl "http://localhost:8000/api/health"
+curl "http://localhost:8081/api/health"
 
 # 测试系统信息
-curl "http://localhost:8000/api/system/info"
+curl "http://localhost:8081/api/system/info"
 ```
 
 ## 🏗️ 项目结构
@@ -757,8 +757,8 @@ project/
 **问题1：端口被占用**
 ```bash
 # 查找占用端口的进程
-netstat -ano | findstr :8000  # Windows
-lsof -i :8000                  # macOS/Linux
+netstat -ano | findstr :8081  # Windows
+lsof -i :8081                  # macOS/Linux
 
 # 杀死进程或修改配置文件中的端口
 ```
@@ -854,10 +854,10 @@ logging:
 tail -f app.log
 
 # 检查系统状态
-curl http://localhost:8000/api/health
+curl http://localhost:8081/api/health
 
 # 测试AI提供商状态
-curl http://localhost:8000/api/ai-providers
+curl http://localhost:8081/api/ai-providers
 ```
 
 ### 获取帮助

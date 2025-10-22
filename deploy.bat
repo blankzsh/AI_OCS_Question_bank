@@ -268,8 +268,8 @@ docker-compose ps
 
 echo.
 echo [INFO] 服务访问地址:
-echo   - API服务: http://localhost:8000
-echo   - API文档: http://localhost:8000/docs
+echo   - API服务: http://localhost:8081
+echo   - API文档: http://localhost:8081/docs
 
 if "%DEPLOY_MODE%"=="prod" echo   - Nginx代理: http://localhost
 if "%DEPLOY_MODE%"=="full" echo   - Prometheus监控: http://localhost:9090

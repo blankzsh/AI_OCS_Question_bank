@@ -36,7 +36,7 @@ RUN mkdir -p /app/data && \
     chown appuser:appuser /app/data
 
 # 暴露端口
-EXPOSE 8000
+EXPOSE 8081
 
 # 切换到非root用户
 USER appuser

@@ -59,9 +59,9 @@ deploy.bat --mode prod --build
 
 部署完成后，可通过以下地址访问：
 
-- **API服务**: http://localhost:8000
-- **API文档**: http://localhost:8000/docs
-- **健康检查**: http://localhost:8000/health
+- **API服务**: http://localhost:8081
+- **API文档**: http://localhost:8081/docs
+- **健康检查**: http://localhost:8081/health
 
 ## 🏗️ 部署模式
 
@@ -123,7 +123,7 @@ deploy.bat --mode prod --build
 # 应用基础配置
 APP_NAME=AI智能题库查询系统
 SERVER_HOST=0.0.0.0
-SERVER_PORT=8000
+SERVER_PORT=8081
 
 # 数据库配置
 DATABASE_URL=sqlite:///./data/app.db
@@ -156,7 +156,7 @@ app:
 
 server:
   host: "0.0.0.0"
-  port: 8000
+  port: 8081
   reload: false
 
 ai_providers:
@@ -234,7 +234,7 @@ AI_wenda/
 
 | 服务 | 容器端口 | 主机端口 | 说明 |
 |------|----------|----------|------|
-| AI问答系统 | 8000 | 8000 | API服务 |
+| AI问答系统 | 8081 | 8081 | API服务 |
 | Redis | 6379 | 6379 | 缓存服务 |
 | Nginx | 80/443 | 80/443 | 反向代理 |
 | Prometheus | 9090 | 9090 | 监控服务 |
@@ -330,11 +330,11 @@ docker-compose build --no-cache
 
 ```bash
 # 检查端口占用
-netstat -tulpn | grep :8000
+netstat -tulpn | grep :8081
 
 # 修改docker-compose.yml中的端口映射
 ports:
-  - "8001:8000"  # 改为其他端口
+  - "8002:8081"  # 改为其他端口
 ```
 
 #### 3. 数据库连接失败

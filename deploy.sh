@@ -201,8 +201,8 @@ show_status() {
     docker-compose ps
 
     print_info "服务访问地址:"
-    echo "  - API服务: http://localhost:8000"
-    echo "  - API文档: http://localhost:8000/docs"
+    echo "  - API服务: http://localhost:8081"
+    echo "  - API文档: http://localhost:8081/docs"
 
     if [[ "$DEPLOY_MODE" == "prod" || "$DEPLOY_MODE" == "full" ]]; then
         echo "  - Nginx代理: http://localhost"
