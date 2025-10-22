@@ -1,0 +1,255 @@
+# ===================
+# Python - 基础
+# ===================
+
+# 字节编译的 / 优化的 / DLL 文件
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C 扩展
+*.so
+
+# 分发 / 打包
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# 单元测试 / 覆盖率报告
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# 翻译
+*.mo
+*.pot
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask
+instance/
+.webassets-cache
+
+# Scrapy
+.scrapy
+
+# Sphinx 文档
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# PEP 582
+__pypackages__/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath
+*.sage.py
+
+# 环境变量
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder
+.spyderproject
+.spyproject
+
+# Rope
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre
+.pyre/
+
+# ===================
+# 项目特定文件
+# ===================
+
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+question_bank.db
+
+# 配置文件（包含敏感信息）
+config.json
+.env.local
+.env.production
+*.key
+*.pem
+
+# 日志文件
+*.log
+logs/
+app.log*
+
+# 缓存和临时文件
+.cache/
+tmp/
+temp/
+*.tmp
+*.temp
+
+# IDE 和编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ===================
+# AI/ML 相关
+# ===================
+
+# 模型文件
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.hdf5
+*.pb
+*.ckpt
+*.pth
+*.pt
+
+# 数据文件
+data/
+datasets/
+*.csv
+*.json.l
+
+# Jupyter 输出
+*.ipynb
+
+# ===================
+# BMad 工作流相关
+# ===================
+
+# BMad 核心文件
+.bmad-core/
+.claude/commands/BMad/
+
+# 工作流输出
+docs/
+outputs/
+results/
+
+# ===================
+# 备份文件
+# ===================
+
+*.bak
+*.backup
+*.old
+*.orig
+*.rej
+
+# 压缩文件
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# ===================
+# 系统文件
+# ===================
+
+# 权限文件
+*.acl
+
+# 隐私文件
+.privat*
+
+# 系统生成文件
+.err
+*.out

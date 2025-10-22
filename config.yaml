@@ -1,0 +1,102 @@
+# AI问答系统配置文件
+# 作者：Toni Wang (shell7@petalmail.com)
+
+# 应用基础配置
+app:
+  name: "完美题库"
+  version: "2.0.0"
+  description: "基于FastAPI的智能题库查询系统"
+  homepage: "https://pages.zaizhexue.top/"
+  debug: true
+
+# 服务器配置
+server:
+  host: "0.0.0.0"
+  port: 8081
+  reload: false
+
+# 数据库配置
+database:
+  url: "sqlite:///./question_bank.db"
+  echo: false
+  pool_size: 5
+  max_overflow: 10
+
+# AI服务配置
+ai:
+  # 默认使用的AI平台 (alibaba, deepseek, openai, google)
+  default_provider: "alibaba"
+
+  # 请求超时时间（秒）
+  timeout: 30
+
+  # 最大重试次数
+  max_retries: 3
+
+  # 重试延迟（秒）
+  retry_delay: 2
+
+# AI平台配置
+providers:
+  # 阿里百炼配置
+  alibaba:
+    name: "阿里百炼"
+    enabled: true
+    api_key: ""  # 请填入您的阿里百炼API Key
+    base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    model: "qwen-turbo"
+    max_tokens: 512
+    temperature: 0.1
+    top_p: 0.9
+
+  # DeepSeek配置
+  deepseek:
+    name: "DeepSeek"
+    enabled: true
+    api_key: ""  # 请填入您的DeepSeek API Key
+    base_url: "https://api.deepseek.com"
+    model: "deepseek-chat"
+    max_tokens: 512
+    temperature: 0.1
+    top_p: 0.9
+
+  # OpenAI配置
+  openai:
+    name: "OpenAI"
+    enabled: true
+    api_key: ""  # 请填入您的OpenAI API Key
+    base_url: "https://api.openai.com/v1"
+    model: "gpt-3.5-turbo"
+    max_tokens: 512
+    temperature: 0.1
+    top_p: 0.9
+
+  # Google Studio配置
+  google:
+    name: "Google Studio"
+    enabled: true
+    api_key: ""  # 请填入您的Google Studio API Key
+    base_url: "https://generativelanguage.googleapis.com/v1beta"
+    model: "gemini-pro"
+    max_tokens: 512
+    temperature: 0.1
+    top_p: 0.9
+
+# 日志配置
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/app.log"
+  max_size: "10MB"
+  backup_count: 5
+
+# 缓存配置
+cache:
+  enabled: true
+  ttl: 3600  # 缓存时间（秒）
+
+# 安全配置
+security:
+  cors_origins: ["*"]
+  cors_methods: ["GET", "POST"]
+  cors_headers: ["*"]

@@ -1,0 +1,36 @@
+# FastAPI Web框架
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+
+# 数据库ORM
+sqlalchemy>=2.0.0
+alembic>=1.13.0
+
+# 数据验证和配置
+pydantic>=2.5.0
+pydantic-settings>=2.0.0
+PyYAML>=6.0.1
+python-dotenv>=1.0.0
+
+# HTTP客户端
+requests>=2.31.0
+
+# 数据库驱动 (SQLite内置，其他数据库可选)
+# psycopg2-binary>=2.9.0  # PostgreSQL
+# PyMySQL>=1.1.0         # MySQL
+# pymongo>=4.6.0         # MongoDB
+
+# 开发和测试工具
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+httpx>=0.25.0
+
+# 日志和监控
+structlog>=23.2.0
+
+# 安全相关
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+
+# 其他工具
+python-multipart>=0.0.6
