@@ -253,3 +253,4 @@ results/
 # 系统生成文件
 .err
 *.out
+.spec-workflow/
